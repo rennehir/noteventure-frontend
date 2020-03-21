@@ -84,11 +84,7 @@ const Info = ({ currentLocation }) => {
 
     createMessage({ from, text, coordinates }).then(message => {
       console.log(message)
-      alert(
-        `FROM: ${message.from === "" ? "anonymous" : message.from} \n\n${
-          message.text
-        }`
-      )
+      alert("Message created")
       setNewMessageLoading(false)
       handleReloadMessages()
     })
