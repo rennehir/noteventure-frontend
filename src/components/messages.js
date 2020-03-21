@@ -38,13 +38,13 @@ const Messages = ({ currentLocation }) => {
 }
 
 const Message = ({ message, currentLocation, handleReadMessage }) => {
-  const { from, coordinates } = message
-  const center = { lat: coordinates[1], lng: coordinates[0] }
+  const { from, location } = message
+  const center = { lat: location.coordinates[1], lng: location.coordinates[0] }
 
   let distance
   if (currentLocation) {
     distance = getDistance(
-      { latitude: coordinates[1], longitude: coordinates[0] },
+      { latitude: location.coordinates[1], longitude: location.coordinates[0] },
       {
         latitude: currentLocation.lat,
         longitude: currentLocation.lng,

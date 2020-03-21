@@ -16,8 +16,8 @@ const Info = ({ currentLocation }) => {
     getMessages().then(messages => {
       if (currentLocation) {
         const messagesCoord = messages.map(m => ({
-          latitude: m.coordinates[1],
-          longitude: m.coordinates[0],
+          latitude: m.location.coordinates[1],
+          longitude: m.location.coordinates[0],
         }))
         const n = findNearest(
           { latitude: currentLocation.lat, longitude: currentLocation.lng },
@@ -26,14 +26,15 @@ const Info = ({ currentLocation }) => {
 
         const nearestM = messages.find(
           m =>
-            m.coordinates[1] === n.latitude && m.coordinates[0] === n.longitude
+            m.location.coordinates[1] === n.latitude &&
+            m.location.coordinates[0] === n.longitude
         )
         setNearest(nearestM)
         if (nearestM) {
           const d = getDistance(
             {
-              latitude: nearestM.coordinates[1],
-              longitude: nearestM.coordinates[0],
+              latitude: nearestM.location.coordinates[1],
+              longitude: nearestM.location.coordinates[0],
             },
             { latitude: currentLocation.lat, longitude: currentLocation.lng }
           )
@@ -47,8 +48,8 @@ const Info = ({ currentLocation }) => {
   useEffect(() => {
     if (currentLocation && messages) {
       const messagesCoord = messages.map(m => ({
-        latitude: m.coordinates[1],
-        longitude: m.coordinates[0],
+        latitude: m.location.coordinates[1],
+        longitude: m.location.coordinates[0],
       }))
       const n = findNearest(
         { latitude: currentLocation.lat, longitude: currentLocation.lng },
@@ -56,14 +57,16 @@ const Info = ({ currentLocation }) => {
       )
 
       const nearestM = messages.find(
-        m => m.coordinates[1] === n.latitude && m.coordinates[0] === n.longitude
+        m =>
+          m.location.coordinates[1] === n.latitude &&
+          m.location.coordinates[0] === n.longitude
       )
       setNearest(nearestM)
       if (nearestM) {
         const d = getDistance(
           {
-            latitude: nearestM.coordinates[1],
-            longitude: nearestM.coordinates[0],
+            latitude: nearestM.location.coordinates[1],
+            longitude: nearestM.location.coordinates[0],
           },
           { latitude: currentLocation.lat, longitude: currentLocation.lng }
         )
