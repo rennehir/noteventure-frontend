@@ -44,7 +44,8 @@ const Info = ({ currentLocation }) => {
         backgroundColor: "white",
         borderRadius: "5px",
         padding: "10px 15px",
-        width: "20%",
+        maxWidth: "40%",
+        width: "300px",
       }}
     >
       <h2>Info</h2>

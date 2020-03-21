@@ -10,7 +10,7 @@ import getDistance from "geolib/es/getDistance"
 
 import { messages } from "../data"
 
-const Message = ({ from, coordinates, currentLocation }) => {
+const Message = ({ from, text, coordinates, currentLocation }) => {
   const center = { lat: coordinates[1], lng: coordinates[0] }
 
   let distance
@@ -26,11 +26,21 @@ const Message = ({ from, coordinates, currentLocation }) => {
     console.log(`Distance to message from ${from} is ${distance}`)
   }
 
+  const handleTooFar = () => {
+    alert("Go closer to see the message")
+  }
+  const handleReadMessage = () => {
+    alert(`FROM: ${from} \n\n${text}`)
+  }
+
+  const isTooFar = distance > 300
+
   return (
     <Circle
+      onClick={isTooFar ? handleTooFar : handleReadMessage}
       options={{
         center,
-        radius: distance > 300 ? 300 : 10,
+        radius: isTooFar ? 300 : 10,
       }}
     />
   )
