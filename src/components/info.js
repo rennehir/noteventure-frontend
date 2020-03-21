@@ -1,15 +1,51 @@
 import React, { useEffect, useState } from "react"
+import { Button } from "antd"
 import findNearest from "geolib/es/findNearest"
 import getDistance from "geolib/es/getDistance"
 
-import { messages } from "../data"
+import { getMessages, createMessage } from "../data"
 
 const Info = ({ currentLocation }) => {
+  const [messages, setMessages] = useState([])
   const [nearest, setNearest] = useState(null)
   const [distance, setDistance] = useState(null)
+  const [newMessageLoading, setNewMessageLoading] = useState(false)
+  const [reloadLoading, setReloadLoading] = useState(false)
 
   useEffect(() => {
-    if (currentLocation) {
+    getMessages().then(messages => {
+      if (currentLocation) {
+        const messagesCoord = messages.map(m => ({
+          latitude: m.coordinates[1],
+          longitude: m.coordinates[0],
+        }))
+        const n = findNearest(
+          { latitude: currentLocation.lat, longitude: currentLocation.lng },
+          messagesCoord
+        )
+
+        const nearestM = messages.find(
+          m =>
+            m.coordinates[1] === n.latitude && m.coordinates[0] === n.longitude
+        )
+        setNearest(nearestM)
+        if (nearestM) {
+          const d = getDistance(
+            {
+              latitude: nearestM.coordinates[1],
+              longitude: nearestM.coordinates[0],
+            },
+            { latitude: currentLocation.lat, longitude: currentLocation.lng }
+          )
+          setDistance(d)
+        }
+      }
+      setMessages(messages)
+    })
+  })
+
+  useEffect(() => {
+    if (currentLocation && messages) {
       const messagesCoord = messages.map(m => ({
         latitude: m.coordinates[1],
         longitude: m.coordinates[0],
@@ -23,16 +59,45 @@ const Info = ({ currentLocation }) => {
         m => m.coordinates[1] === n.latitude && m.coordinates[0] === n.longitude
       )
       setNearest(nearestM)
-      const d = getDistance(
-        {
-          latitude: nearestM.coordinates[1],
-          longitude: nearestM.coordinates[0],
-        },
-        { latitude: currentLocation.lat, longitude: currentLocation.lng }
-      )
-      setDistance(d)
+      if (nearestM) {
+        const d = getDistance(
+          {
+            latitude: nearestM.coordinates[1],
+            longitude: nearestM.coordinates[0],
+          },
+          { latitude: currentLocation.lat, longitude: currentLocation.lng }
+        )
+        setDistance(d)
+      }
     }
-  }, [currentLocation])
+  }, [currentLocation, nearest])
+
+  const handleNewMessage = () => {
+    setNewMessageLoading(true)
+    const text = prompt("Your message")
+    const from = prompt("Your name, you can also leave this empty")
+
+    const coordinates = [currentLocation.lng, currentLocation.lat]
+
+    createMessage({ from, text, coordinates }).then(message => {
+      console.log(message)
+      alert(
+        `FROM: ${message.from === "" ? "anonymous" : message.from} \n\n${
+          message.text
+        }`
+      )
+      setNewMessageLoading(false)
+      handleReloadMessages()
+    })
+  }
+
+  const handleReloadMessages = () => {
+    setReloadLoading(true)
+    getMessages().then(newMessages => {
+      console.log(newMessages)
+      setReloadLoading(false)
+    })
+  }
 
   return (
     <div
@@ -55,6 +120,22 @@ const Info = ({ currentLocation }) => {
           {distance} meters away
         </p>
       )}
+      <Button
+        type="primary"
+        loading={newMessageLoading}
+        style={{ margin: "10px 0" }}
+        onClick={handleNewMessage}
+      >
+        Leave a message
+      </Button>
+      <Button
+        type="default"
+        loading={reloadLoading}
+        style={{ margin: "10px 0" }}
+        onClick={handleReloadMessages}
+      >
+        Reload messages
+      </Button>
     </div>
   )
 }
