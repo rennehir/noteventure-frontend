@@ -9,7 +9,6 @@ import React from "react"
 import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
 
-import Header from "./header"
 import "./layout.css"
 
 const Layout = ({ children }) => {
@@ -27,8 +26,17 @@ const Layout = ({ children }) => {
     <div
       style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
     >
-      <Header siteTitle={data.site.siteMetadata.title} />
-      <main style={{ flex: "1", display: "flex" }}>{children}</main>
+      {/* <Header siteTitle={data.site.siteMetadata.title} /> */}
+      <main
+        style={{
+          flex: "1",
+          display: "flex",
+          flexDirection: "column",
+          height: "100vh",
+        }}
+      >
+        {children}
+      </main>
     </div>
   )
 }
