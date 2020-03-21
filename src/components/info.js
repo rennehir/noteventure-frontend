@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react"
 import findNearest from "geolib/es/findNearest"
+import getDistance from "geolib/es/getDistance"
 
 import { messages } from "../data"
 
 const Info = ({ currentLocation }) => {
   const [nearest, setNearest] = useState(null)
+  const [distance, setDistance] = useState(null)
 
   useEffect(() => {
     if (currentLocation) {
@@ -17,12 +19,18 @@ const Info = ({ currentLocation }) => {
         messagesCoord
       )
 
-      setNearest(
-        messages.find(
-          m =>
-            m.coordinates[1] === n.latitude && m.coordinates[0] === n.longitude
-        )
+      const nearestM = messages.find(
+        m => m.coordinates[1] === n.latitude && m.coordinates[0] === n.longitude
       )
+      setNearest(nearestM)
+      const d = getDistance(
+        {
+          latitude: nearestM.coordinates[1],
+          longitude: nearestM.coordinates[0],
+        },
+        { latitude: currentLocation.lat, longitude: currentLocation.lng }
+      )
+      setDistance(d)
     }
   }, [currentLocation])
 
@@ -40,7 +48,12 @@ const Info = ({ currentLocation }) => {
       }}
     >
       <h2>Info</h2>
-      <div>Nearest message is from: {nearest?.from ?? "anonymous"}</div>
+      {nearest && (
+        <p>
+          Nearest message is from: {nearest?.from ?? "anonymous"} and it's{" "}
+          {distance} meters away
+        </p>
+      )}
     </div>
   )
 }
