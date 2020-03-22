@@ -38,7 +38,7 @@ const Messages = ({ currentLocation }) => {
 }
 
 const Message = ({ message, currentLocation, handleReadMessage }) => {
-  const { from, location } = message
+  const { location } = message
   const center = { lat: location.coordinates[1], lng: location.coordinates[0] }
 
   let distance
@@ -50,8 +50,6 @@ const Message = ({ message, currentLocation, handleReadMessage }) => {
         longitude: currentLocation.lng,
       }
     )
-
-    console.log(`Distance to message from ${from} is ${distance}`)
   }
 
   const handleTooFar = () => {
