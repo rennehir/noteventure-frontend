@@ -1,7 +1,6 @@
 import axios from "axios"
 
-// TODO: Replace
-const BASE_URL = "https://icanhazdadjoke.com"
+const BASE_URL = "https://sheltered-waters-19420.herokuapp.com"
 
 const messages = [
   {
@@ -27,23 +26,19 @@ const messages = [
 ]
 
 export const getMessages = async () => {
-  // TODO: Uncomment this
-  // const path = `${BASE_URL}/messages`
-  // const { data } = await axios.get(path)
-  // return data.messages
+  const path = `${BASE_URL}/messages`
+  const { data } = await axios.get(path)
+  return data.messages
 
-  // TODO: Remove below this line
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve(messages)
-    }, 1000)
-  })
+  // return new Promise(resolve => {
+  //   setTimeout(() => {
+  //     resolve(messages)
+  //   }, 1000)
+  // })
 }
 
 export const createMessage = async ({ from, text, coordinates }) => {
   const message = {
-    id: Date.now(), // TODO: Remove this line
-    created: new Date().toISOString(), // TODO: And this
     from,
     text,
     location: {
@@ -52,18 +47,16 @@ export const createMessage = async ({ from, text, coordinates }) => {
     },
   }
 
-  // TODO: Uncomment this
-  // const path = `${BASE_URL}/messages`
-  // const { data } = await axios.post(path, {
-  //   message,
-  // })
-  // return data
-
-  // TODO: Remove below this line
-  messages.push(message)
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve(message)
-    }, 1000)
+  const path = `${BASE_URL}/messages`
+  const { data } = await axios.post(path, {
+    message,
   })
+  return data
+
+  // messages.push(message)
+  // return new Promise(resolve => {
+  //   setTimeout(() => {
+  //     resolve(message)
+  //   }, 1000)
+  // })
 }
