@@ -13,6 +13,7 @@ const Info = ({ currentLocation }) => {
   const [distance, setDistance] = useState(null)
   const [newMessageLoading, setNewMessageLoading] = useState(false)
   const [reloadLoading, setReloadLoading] = useState(false)
+  const [showInfo, setShowInfo] = useState(true)
 
   useEffect(() => {
     getMessages().then(messages => {
@@ -110,39 +111,52 @@ const Info = ({ currentLocation }) => {
         backgroundColor: "white",
         borderRadius: "5px",
         padding: "10px 15px",
-        maxWidth: "40%",
-        width: "300px",
+        // maxWidth: "40%",
+        // width: "300px",
       }}
     >
-      <h2 style={{ letterSpacing: "3px" }}>NoteVenture</h2>
-      <p>
-        Go closer to the hidden messages in order to see them. You can leave a
-        message to your location at any time.
-      </p>
-      {nearest && (
-        <p>
-          Nearest message is from: {nearest?.from ?? "anonymous"} and it's{" "}
-          {distance} meters away
-        </p>
+      <div style={{ display: "flex", flexWrap: "wrap" }}>
+        <h2 style={{ display: "inline", letterSpacing: "3px" }}>NoteVenture</h2>
+        <Button
+          type="link"
+          onClick={() => setShowInfo(prev => !prev)}
+          style={{ marginLeft: "auto", color: "#ec6433" }}
+        >
+          {showInfo ? "Hide" : "Show"}
+        </Button>
+      </div>
+      {showInfo && (
+        <div>
+          <p>
+            Go closer to the hidden messages in order to see them. You can leave
+            a message to your location at any time.
+          </p>
+          {nearest && (
+            <p>
+              Nearest message is from: {nearest?.from ?? "anonymous"} and it's{" "}
+              {distance} meters away
+            </p>
+          )}
+          <Button
+            type="primary"
+            loading={newMessageLoading}
+            style={{ margin: "10px" }}
+            onClick={handleNewMessage}
+            className="Button Button-primary"
+          >
+            Leave a message
+          </Button>
+          <Button
+            type="default"
+            loading={reloadLoading}
+            style={{ margin: "10px" }}
+            onClick={handleReloadMessages}
+            className="Button"
+          >
+            Reload messages
+          </Button>
+        </div>
       )}
-      <Button
-        type="primary"
-        loading={newMessageLoading}
-        style={{ margin: "10px 0" }}
-        onClick={handleNewMessage}
-        className="Button Button-primary"
-      >
-        Leave a message
-      </Button>
-      <Button
-        type="default"
-        loading={reloadLoading}
-        style={{ margin: "10px 0" }}
-        onClick={handleReloadMessages}
-        className="Button"
-      >
-        Reload messages
-      </Button>
     </div>
   )
 }
