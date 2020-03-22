@@ -2,10 +2,7 @@ import React, { useEffect, useState } from "react"
 import { Circle } from "react-google-maps"
 import getDistance from "geolib/es/getDistance"
 
-import { getMessages } from "../data"
-
-const Messages = ({ currentLocation }) => {
-  const [messages, setMessages] = useState([])
+const Messages = ({ currentLocation, messages }) => {
   const [readMessages, setReadMessages] = useState([])
 
   const handleReadMessage = message => {
@@ -16,10 +13,6 @@ const Messages = ({ currentLocation }) => {
     localStorage.setItem("readMessages", JSON.stringify(readMessagesStorage))
     setReadMessages(prev => [...prev, message.id])
   }
-
-  useEffect(() => {
-    getMessages().then(setMessages)
-  }, [])
 
   return (
     <>
@@ -69,7 +62,7 @@ const Message = ({ message, currentLocation, handleReadMessage }) => {
         strokeOpacity: 0.6,
         strokeColor: "#ec6433",
         strokeWeight: 3,
-        zIndex: 100,
+        zIndex: isTooFar ? 300 : 1000,
       }}
     />
   )

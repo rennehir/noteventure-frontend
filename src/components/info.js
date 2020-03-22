@@ -7,8 +7,7 @@ import { getMessages, createMessage } from "../data"
 
 import "./button.css"
 
-const Info = ({ currentLocation }) => {
-  const [messages, setMessages] = useState([])
+const Info = ({ currentLocation, messages, loadMessages }) => {
   const [nearest, setNearest] = useState(null)
   const [distance, setDistance] = useState(null)
   const [newMessageLoading, setNewMessageLoading] = useState(false)
@@ -16,36 +15,33 @@ const Info = ({ currentLocation }) => {
   const [showInfo, setShowInfo] = useState(true)
 
   useEffect(() => {
-    getMessages().then(messages => {
-      if (currentLocation) {
-        const messagesCoord = messages.map(m => ({
-          latitude: m.location.coordinates[1],
-          longitude: m.location.coordinates[0],
-        }))
-        const n = findNearest(
-          { latitude: currentLocation.lat, longitude: currentLocation.lng },
-          messagesCoord
-        )
+    if (currentLocation) {
+      const messagesCoord = messages.map(m => ({
+        latitude: m.location.coordinates[1],
+        longitude: m.location.coordinates[0],
+      }))
+      const n = findNearest(
+        { latitude: currentLocation.lat, longitude: currentLocation.lng },
+        messagesCoord
+      )
 
-        const nearestM = messages.find(
-          m =>
-            m.location.coordinates[1] === n.latitude &&
-            m.location.coordinates[0] === n.longitude
+      const nearestM = messages.find(
+        m =>
+          m.location.coordinates[1] === n.latitude &&
+          m.location.coordinates[0] === n.longitude
+      )
+      setNearest(nearestM)
+      if (nearestM) {
+        const d = getDistance(
+          {
+            latitude: nearestM.location.coordinates[1],
+            longitude: nearestM.location.coordinates[0],
+          },
+          { latitude: currentLocation.lat, longitude: currentLocation.lng }
         )
-        setNearest(nearestM)
-        if (nearestM) {
-          const d = getDistance(
-            {
-              latitude: nearestM.location.coordinates[1],
-              longitude: nearestM.location.coordinates[0],
-            },
-            { latitude: currentLocation.lat, longitude: currentLocation.lng }
-          )
-          setDistance(d)
-        }
+        setDistance(d)
       }
-      setMessages(messages)
-    })
+    }
   }, [])
 
   useEffect(() => {
@@ -95,7 +91,7 @@ const Info = ({ currentLocation }) => {
 
   const handleReloadMessages = () => {
     setReloadLoading(true)
-    getMessages().then(newMessages => {
+    loadMessages().then(newMessages => {
       console.log(newMessages)
       setReloadLoading(false)
     })

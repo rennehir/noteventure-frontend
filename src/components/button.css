@@ -16,3 +16,8 @@
   background-color: #fc7443;
   color: white;
 }
+.Button-primary:active {
+  border-color: #fc7443;
+  background-color: #fc7443;
+  color: white;
+}

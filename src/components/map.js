@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import {
   withScriptjs,
   withGoogleMap,
@@ -29,14 +29,16 @@ const MyLocation = ({ position }) => {
 }
 
 const Map = withScriptjs(
-  withGoogleMap(({ currentLocation }) => {
+  withGoogleMap(({ currentLocation, messages }) => {
     return (
       <GoogleMap
         defaultZoom={16}
-        defaultCenter={{ lat: 62.2407502069861, lng: 25.7643105987017 }}
+        defaultCenter={
+          currentLocation || { lat: 62.2407502069861, lng: 25.7643105987017 }
+        }
       >
         <MyLocation position={currentLocation} />
-        <Messages currentLocation={currentLocation} />
+        <Messages currentLocation={currentLocation} messages={messages} />
       </GoogleMap>
     )
   })
