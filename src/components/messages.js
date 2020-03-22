@@ -19,7 +19,7 @@ const Messages = ({ currentLocation }) => {
 
   useEffect(() => {
     getMessages().then(setMessages)
-  })
+  }, [])
 
   return (
     <>

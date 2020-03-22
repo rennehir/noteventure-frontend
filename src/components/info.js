@@ -43,7 +43,7 @@ const Info = ({ currentLocation }) => {
       }
       setMessages(messages)
     })
-  })
+  }, [])
 
   useEffect(() => {
     if (currentLocation && messages) {
