@@ -19,9 +19,9 @@ const MyLocation = ({ position }) => {
           a 20,20 0 1,0 40,0
           a 20,20 0 1,0 -40,0
         `,
-        fillColor: "blue",
+        fillColor: "#ec6433",
         fillOpacity: 0.8,
-        strokeColor: "white",
+        strokeColor: "#737373",
         strokeWeight: 3,
       }}
     />

@@ -66,6 +66,12 @@ const Message = ({ message, currentLocation, handleReadMessage }) => {
       options={{
         center,
         radius: isTooFar ? 300 : 10,
+        fillColor: "#ffde59",
+        fillOpacity: 0.3,
+        strokeOpacity: 0.6,
+        strokeColor: "#ec6433",
+        strokeWeight: 3,
+        zIndex: 100,
       }}
     />
   )

@@ -5,6 +5,8 @@ import getDistance from "geolib/es/getDistance"
 
 import { getMessages, createMessage } from "../data"
 
+import "./button.css"
+
 const Info = ({ currentLocation }) => {
   const [messages, setMessages] = useState([])
   const [nearest, setNearest] = useState(null)
@@ -112,7 +114,11 @@ const Info = ({ currentLocation }) => {
         width: "300px",
       }}
     >
-      <h2>Info</h2>
+      <h2 style={{ letterSpacing: "3px" }}>NoteVenture</h2>
+      <p>
+        Go closer to the hidden messages in order to see them. You can leave a
+        message to your location at any time.
+      </p>
       {nearest && (
         <p>
           Nearest message is from: {nearest?.from ?? "anonymous"} and it's{" "}
@@ -124,6 +130,7 @@ const Info = ({ currentLocation }) => {
         loading={newMessageLoading}
         style={{ margin: "10px 0" }}
         onClick={handleNewMessage}
+        className="Button Button-primary"
       >
         Leave a message
       </Button>
@@ -132,6 +139,7 @@ const Info = ({ currentLocation }) => {
         loading={reloadLoading}
         style={{ margin: "10px 0" }}
         onClick={handleReloadMessages}
+        className="Button"
       >
         Reload messages
       </Button>

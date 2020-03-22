@@ -1,0 +1,18 @@
+.Button {
+}
+
+.Button:hover {
+  border-color: #ec6433;
+  color: #ec6433;
+}
+
+.Button-primary {
+  border-color: #ec6433;
+  background-color: #ec6433;
+}
+
+.Button-primary:hover {
+  border-color: #fc7443;
+  background-color: #fc7443;
+  color: white;
+}
