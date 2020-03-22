@@ -2,8 +2,7 @@ import axios from "axios"
 
 const BASE_URL = "https://sheltered-waters-19420.herokuapp.com"
 
-const messages = [
-  {
+const messages = [{
     id: "d290f1ee-6c54-4b01-90e6-d701748f0851",
     from: "sipsimonsteri",
     text: "Hello World",
@@ -27,7 +26,9 @@ const messages = [
 
 export const getMessages = async () => {
   const path = `${BASE_URL}/messages`
-  const { data } = await axios.get(path)
+  const {
+    data
+  } = await axios.get(path)
   return data.messages
 
   // return new Promise(resolve => {
@@ -37,7 +38,11 @@ export const getMessages = async () => {
   // })
 }
 
-export const createMessage = async ({ from, text, coordinates }) => {
+export const createMessage = async ({
+  from,
+  text,
+  coordinates
+}) => {
   const message = {
     from,
     text,
@@ -48,8 +53,15 @@ export const createMessage = async ({ from, text, coordinates }) => {
   }
 
   const path = `${BASE_URL}/messages`
-  const { data } = await axios.post(path, {
-    message,
+  const {
+    data
+  } = await axios.post(path, {
+    from,
+    text,
+    location: {
+      type: "Point",
+      coordinates,
+    }
   })
   return data
 
